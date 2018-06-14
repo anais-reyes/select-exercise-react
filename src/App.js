@@ -5,10 +5,17 @@ class App extends Component {
 	constructor() {
 		super();
 		this.changeState = this.changeState.bind(this);
+		this.setCity = this.setCity.bind(this);
+		this.addList = this.addList.bind(this);
+		this.sortByLength = this.sortByLength.bind(this);
+		this.sortByName = this.sortByName.bind(this);
 		this.state = {
+			repeated: 0,
 			currentState: 'default',
+			currentCity: 'default',
+			list: [],
 			states: {
-				aguascalientes: [
+				Aguascalientes: [
 					'Aguascalientes',
 					'Asientos',
 					'Calvillo',
@@ -20,7 +27,7 @@ class App extends Component {
 					'Tepezalá',
 					'El Llano',
 				],
-				campeche: [
+				Campeche: [
 					'Calkiní',
 					'Campeche',
 					'Carmen',
@@ -32,7 +39,7 @@ class App extends Component {
 					'Escárcega',
 					'Calakmul',
 				],
-				chiapas: [
+				Chiapas: [
 					'Chiapas',
 					'Acacoyagua',
 					'Acala',
@@ -45,7 +52,7 @@ class App extends Component {
 					'Arriaga',
 					'Bejucal de Ocampo',
 				],
-				chihuahua: [
+				Chihuahua: [
 					'Chihuahua',
 					'Ahumada',
 					'Aldama',
@@ -58,7 +65,7 @@ class App extends Component {
 					'Bacoyna',
 					'Buenaventura',
 				],
-				cdmx: [
+				CDMX: [
 					'CDMX',
 					'Álvaro Obregón',
 					'Azcapotzalco',
@@ -71,7 +78,7 @@ class App extends Component {
 					'Iztapalapa',
 					'Magdalena Contreras',
 				],
-				hidalgo: [
+				Hidalgo: [
 					'Hidalgo',
 					'Acatlán',
 					'Acaxochitlán',
@@ -84,7 +91,7 @@ class App extends Component {
 					'El Arenal',
 					'Atitalaquia',
 				],
-				jalisco: [
+				Jalisco: [
 					'Jalisco',
 					'Acatic',
 					'Acatlán de Juárez',
@@ -97,7 +104,7 @@ class App extends Component {
 					'Atemajac de Brizuela',
 					'Atnego',
 				],
-				nayarit: [
+				Nayarit: [
 					'Nayarit',
 					'Acaponeta',
 					'Ahuacatlán',
@@ -110,7 +117,7 @@ class App extends Component {
 					'Del Nayar',
 					'Rosamorada',
 				],
-				puebla: [
+				Puebla: [
 					'Puebla',
 					'Acajete',
 					'Acateno',
@@ -123,7 +130,7 @@ class App extends Component {
 					'Ahuehuetitla',
 					'Ajalpa',
 				],
-				yucatan: [
+				Yucatán: [
 					'Yucatán',
 					'Abalá',
 					'Acanceh',
@@ -140,11 +147,54 @@ class App extends Component {
 		};
 	}
 	changeState(event) {
-		this.setState({ currentState: event.target.value }, () => this.addCities());
+		this.setState({ currentState: event.target.value });
+		this.setState({ currentCity: 'default' });
 	}
-	addCities() {
-		console.log(this.state.states);
-		console.log(this.state.states[this.state.currentState]);
+
+	setCity(event) {
+		this.setState({ currentCity: event.target.value });
+	}
+
+	addList() {
+		if (this.state.list.length < 10) {
+			this.setState({ list: [...this.state.list, this.state.currentCity] }, () => {
+				this.countRepeated();
+			});
+		} else {
+			let something = this.state.list;
+			something.shift();
+			this.setState({ list: [...something, this.state.currentCity] }, () => {
+				this.countRepeated();
+			});
+		}
+	}
+
+	countRepeated() {
+		console.log('test');
+		let counter = 0;
+		var list = this.state.list;
+		console.log(list);
+		for (let i = 0; i < list; i++) {
+			for (let j = 0; j < i; j++) {
+				if (i !== j && list[i] === list[j]) {
+					counter++;
+					console.log(counter);
+					this.setState({ repeated: counter });
+				}
+			}
+			// console.log(counter);
+			// this.setState({ repeated: counter });
+		}
+	}
+	sortByLength() {
+		let sorted = this.state.list.sort((a, b) => {
+			return a.length - b.length;
+		});
+		this.setState({ list: [...sorted] });
+	}
+	sortByName() {
+		let sorted = this.state.list.sort();
+		this.setState({ list: [...sorted] });
 	}
 
 	render() {
@@ -155,19 +205,13 @@ class App extends Component {
 				</header>
 				<div className="container">
 					<select className="style" onChange={this.changeState}>
-						<option value="default">Selecciona un Estado</option>
-						<option value="aguascalientes">Aguascalientes</option>
-						<option value="campeche">Campeche</option>
-						<option value="chiapas">Chiapas</option>
-						<option value="chihuahua">Chihuahua</option>
-						<option value="cdmx">Ciudad de México</option>
-						<option value="hidalgo">Hidalgo</option>
-						<option value="jalisco">Jalisco</option>
-						<option value="nayarit">Nayarit</option>
-						<option value="puebla">Puebla</option>
-						<option value="yucatan">Yucatán</option>
+						{Object.keys(this.state.states).map((element, index) => <option key={index}>{element}</option>)}
 					</select>
-					<select className="style" disabled={this.state.currentState === 'default' ? true : false}>
+					<select
+						onChange={this.setCity}
+						className="style"
+						disabled={this.state.currentState === 'default' ? true : false}
+					>
 						{this.state.currentState !== 'default' ? (
 							this.state.states[this.state.currentState].map((element, index) => {
 								return <option key={index}>{element}</option>;
@@ -176,6 +220,17 @@ class App extends Component {
 							<option>Selecciona un municipio</option>
 						)}
 					</select>
+					<button disabled={this.state.currentCity === 'default' ? true : false} onClick={this.addList}>
+						Agregar municipio
+					</button>
+				</div>
+				<div>
+					{this.state.list.map((element, index) => {
+						return <p key={index}>{element}</p>;
+					})}
+					<button onClick={this.sortByName}>Ordenar por nombre</button>
+					<button onClick={this.sortByLength}>Ordenar por longitud</button>
+					<p>Ciudades repetidas: {this.state.repeated}</p>
 				</div>
 			</div>
 		);
