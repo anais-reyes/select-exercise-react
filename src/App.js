@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import TodoApp from './components/AppToDo/AppToDo';
+// import TodoApp from './components/AppToDo/AppToDo';
 
 class App extends Component {
 	constructor() {
@@ -49,7 +49,7 @@ class App extends Component {
 					'Amatán',
 					'Amatenango de la Frontera',
 					'Amatenango del Valle',
-					'Ángel Albino Corzo',
+					'Angel Albino Corzo',
 					'Arriaga',
 					'Bejucal de Ocampo',
 				],
@@ -68,7 +68,7 @@ class App extends Component {
 				],
 				CDMX: [
 					'CDMX',
-					'Álvaro Obregón',
+					'Alvaro Obregón',
 					'Azcapotzalco',
 					'Benito Juárez',
 					'Coyoacán',
@@ -180,6 +180,7 @@ class App extends Component {
 				if (i !== j && list[i] === list[j]) {
 					counter++;
 					this.setState({ repeated: counter });
+					break;
 				}
 			}
 		}
@@ -196,6 +197,7 @@ class App extends Component {
 	}
 
 	render() {
+		let disabled = this.state;
 		return (
 			<div className="App">
 				<header>
@@ -222,10 +224,13 @@ class App extends Component {
 						Agregar municipio
 					</button>
 				</div>
-				<div>
-					{this.state.list.map((element, index) => {
-						return <p key={index}>{element}</p>;
-					})}
+				<div id="list">
+					<div id="list-container">
+						{this.state.list.map((element, index) => {
+							return <p key={index}>{element}</p>;
+						})}
+					</div>
+
 					<button onClick={this.sortByName}>Ordenar por nombre</button>
 					<button onClick={this.sortByLength}>Ordenar por longitud</button>
 					<p>Ciudades repetidas: {this.state.repeated}</p>

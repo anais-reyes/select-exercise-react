@@ -19,6 +19,7 @@ body {
 	padding: 10px;
 	font-size: 18px;
 	font-weight: bold;
+	text-align: center;
 }
 
 header {
@@ -45,4 +46,27 @@ select.style {
 	border-radius: 5px;
 	border: 1px solid #144b77;
 	font-size: 18px;
+}
+
+#list {
+	margin: auto;
+	max-width: 600px;
+	text-align: center;
+	border-style: solid;
+	border-color: grey;
+	border-width: 0 1px 1px 1px;
+}
+
+#list-container {
+	min-height: 400px;
+	padding-top: 20px;
+}
+
+button {
+	background: #191970;
+	color: white;
+	font-size: 1em;
+	border-radius: 5px;
+	padding: 2%;
+	margin: 10px;
 }
