@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import TodoApp from './components/AppToDo/AppToDo';
 
 class App extends Component {
 	constructor() {
@@ -174,16 +175,13 @@ class App extends Component {
 		let counter = 0;
 		var list = this.state.list;
 		console.log(list);
-		for (let i = 0; i < list; i++) {
+		for (let i = 0; i < list.length; i++) {
 			for (let j = 0; j < i; j++) {
 				if (i !== j && list[i] === list[j]) {
 					counter++;
-					console.log(counter);
 					this.setState({ repeated: counter });
 				}
 			}
-			// console.log(counter);
-			// this.setState({ repeated: counter });
 		}
 	}
 	sortByLength() {
